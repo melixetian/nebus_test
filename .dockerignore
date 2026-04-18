@@ -1,0 +1,31 @@
+# Virtual environment
+.env
+.env
+.venv
+.venv/
+
+# Python cache
+*.pyc
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+
+# Git
+.git
+.gitignore
+
+# Environment variables
+.env
+.venv/
+
+# Python cache
+*.pyc
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+
+# Data files
+data/
+
+# Logs
+.log
