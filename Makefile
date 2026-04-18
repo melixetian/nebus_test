@@ -17,7 +17,7 @@ install: ## Установить зависимости локально и по
 	test -d $(VENV) || python3 -m venv $(VENV)
 	$(PIP) install --upgrade pip
 	$(PIP) install -r requirements.txt
-	mkdir -p data alembic/versions
+	mkdir -p data src/alembic/versions
 	$(MAKE) build
 
 build: ## Собрать Docker образы
