@@ -17,8 +17,7 @@ install: ## Установить зависимости локально и по
 	test -d $(VENV) || python3 -m venv $(VENV)
 	$(PIP) install --upgrade pip
 	$(PIP) install -r requirements.txt
-	mkdir -p data src/alembic/versions
-	$(MAKE) build
+	mkdir -p src/alembic/versions
 
 build: ## Собрать Docker образы
 	$(DC) build
@@ -47,11 +46,14 @@ downgrade: ## Откатить миграции на указанный шаг (
 logs: ## Показать логи API и Consumer
 	$(DC) logs -f api consumer
 
-clean: ## Остановить сервисы и удалить volumes (очистить БД и RabbitMQ)
-	$(DC) down --volumes --remove-orphans
+clean: ## Остановить сервисы и очистить образы
+	$(DC) down --rmi all --remove-orphans
 
-test: ## Запустить тесты
-	$(PY) -m pytest tests/
+clean_all: ## Остановить сервисы и удалить volumes (очистить БД и RabbitMQ)
+	$(DC) down --rmi all --volumes --remove-orphans
+
+test: ## Запустить bash-скрипт с тестами API
+	./test_api.sh
 
 .PHONY: \
 	help install build api consumer run down \

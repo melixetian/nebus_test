@@ -82,8 +82,8 @@ async def send_webhook(payment: Payment, logger: Logger):
                     logger.error(f"Failed to send webhook for payment {payment.id}: {exc}")
                     # Поднимаем исключение для перемещения в DLQ
                     raise exc
-                
+
                 # Увеличиваем задержку между попытками экспоненциально
-                delay = 2.0 * (2 ** attempt)
-                logger.warning(f"Webhook failed for payment {payment.id}, retrying in {delay}s... (Attempt {attempt + 1}/3)")
+                delay = 2.0 * (2**attempt)
+                logger.warning(f"Webhook failed for payment {payment.id}, retrying in {delay}s... ({attempt + 1}/3)")
                 await asyncio.sleep(delay)
