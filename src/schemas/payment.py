@@ -1,13 +1,14 @@
 from datetime import datetime
-from typing import Any
+from decimal import Decimal
+from typing import Any, Literal
 from uuid import UUID
 
-from pydantic import BaseModel, Field, HttpUrl, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field, HttpUrl
 
 
 class PaymentCreate(BaseModel):
-    amount: float = Field(..., gt=0)
-    currency: str = Field(..., min_length=3, max_length=3)
+    amount: Decimal = Field(..., gt=0, max_digits=10, decimal_places=2)
+    currency: Literal["RUB", "USD", "EUR"] = Field(...)
     description: str | None = None
     metadata: dict[str, Any] | None = None
     webhook_url: HttpUrl
@@ -15,11 +16,11 @@ class PaymentCreate(BaseModel):
 
 class PaymentResponse(BaseModel):
     id: UUID
-    amount: float
-    currency: str
+    amount: Decimal
+    currency: Literal["RUB", "USD", "EUR"]
     description: str | None
     metadata: dict[str, Any] | None = Field(None, validation_alias="metadata_")
-    status: str
+    status: Literal["pending", "succeeded", "failed"]
     idempotency_key: str
     webhook_url: str
     created_at: datetime
